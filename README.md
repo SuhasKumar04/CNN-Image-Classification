@@ -50,3 +50,32 @@ This project uses a classic **3×3 edge detection kernel**:
 [[-1, -1, -1],
  [-1,  8, -1],
  [-1, -1, -1]]
+
+
+# Step 3: Convolution Layer
+
+# Apply convolution using the defined kernel
+image_filter = tf.nn.conv2d(
+    input=image,              # shape: (batch, H, W, channels)
+    filters=kernel,            # shape: (kH, kW, in_channels, out_channels)
+    strides=1,                 # move kernel 1 pixel at a time
+    padding='SAME'             # keep output size same as input
+)
+
+
+# Step 4: Activation (ReLU)
+
+# Apply ReLU activation to introduce non-linearity
+image_detect = tf.nn.relu(image_filter)
+
+# Step 5: Pooling Layer
+
+# Apply max pooling to downsample the feature map
+image_condense = tf.nn.pool(
+    input=image_detect,
+    window_shape=(2, 2),        # pooling window size
+    pooling_type='MAX',         # max pooling
+    strides=(2, 2),             # downsample by factor of 2
+    padding='SAME'
+)
+
